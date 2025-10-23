@@ -21,7 +21,10 @@ jobs:
       - name: Debug workspace
         run: |
           echo "Current folder: $PWD"
-          ls -l
+          echo "Files in folder:"
+          ls -l "$PWD"
+          echo "Dockerfile content:"
+          cat "$PWD/Dockerfile"
 
       - name: Set up QEMU (for buildx)
         uses: docker/setup-qemu-action@v2
@@ -42,7 +45,7 @@ jobs:
           IMAGE_TAG="ghcr.io/${GITHUB_REPOSITORY_OWNER}/$IMAGE_NAME:${GITHUB_SHA}"
           echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_OUTPUT
           echo "Building image with tag: $IMAGE_TAG"
-          docker build -t "$IMAGE_TAG" "$PWD"
+          docker build -f "$PWD/Dockerfile" -t "$IMAGE_TAG" "$PWD"
 
       - name: Run SCA + image scan with Trivy
         id: trivy-scan
@@ -88,7 +91,10 @@ jobs:
       - name: Debug workspace
         run: |
           echo "Current folder: $PWD"
-          ls -l
+          echo "Files in folder:"
+          ls -l "$PWD"
+          echo "Dockerfile content:"
+          cat "$PWD/Dockerfile"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -107,7 +113,7 @@ jobs:
           IMAGE_TAG="ghcr.io/${GITHUB_REPOSITORY_OWNER}/$IMAGE_NAME:latest"
           echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_OUTPUT
           echo "Building release image with tag: $IMAGE_TAG"
-          docker build -t "$IMAGE_TAG" "$PWD"
+          docker build -f "$PWD/Dockerfile" -t "$IMAGE_TAG" "$PWD"
 
       - name: Decode cosign key
         id: cosign-key
