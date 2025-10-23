@@ -48,10 +48,11 @@ jobs:
           trivy image --format json --output trivy_image.json --exit-code 1 --severity CRITICAL $IMAGE_TAG || echo "TRIVY_CRITICAL=1" >> $GITHUB_OUTPUT
 
       - name: Run SAST with Semgrep
-        uses: returntocorp/semgrep-action@v2
+        # change v2 to v1 to fix action
+        uses: returntocorp/semgrep-action@v1
         with:
-          config: 'p/ci'
-
+            config: 'p/ci'
+          
       - name: Generate SBOM with Syft
         id: sbom
         run: |
