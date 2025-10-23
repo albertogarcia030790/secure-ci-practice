@@ -36,6 +36,11 @@ jobs:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
 
+      - name: Debug workspace
+        run: |
+           echo "Current folder: $PWD"
+           ls -l "$GITHUB_WORKSPACE"
+
       - name: Build Docker image (local tag)
         id: build-image
         run: |
