@@ -128,6 +128,13 @@ jobs:
           echo "Building release image with tag: $IMAGE_TAG"
           docker build -f "$PWD/Dockerfile" -t "$IMAGE_TAG" "$PWD"
 
+      - name: Install Cosign
+        run: |
+            COSIGN_VERSION="2.2.0"  # o la última disponible
+            curl -LO "https://github.com/sigstore/cosign/releases/download/v${COSIGN_VERSION}/cosign-linux-amd64"
+            chmod +x cosign-linux-amd64
+            sudo mv cosign-linux-amd64 /usr/local/bin/cosign
+
       - name: Decode cosign key
         id: cosign-key
         run: |
